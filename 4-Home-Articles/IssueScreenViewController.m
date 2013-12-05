@@ -22,8 +22,19 @@
     self.articlesTableView.dataSource = self;
     self.categoriesTableView.delegate = self;
     self.categoriesTableView.dataSource = self;
-    
     self.categoriesTableView.transform = CGAffineTransformMakeRotation(-M_PI_2);
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [super viewWillAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    [super viewWillDisappear:animated];
 }
 
 
@@ -33,14 +44,6 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPat
-{
-    if (tableView == self.categoriesTableView) {
-        CategoriesTableViewCell* myCell = (CategoriesTableViewCell*) cell;
-        myCell.categoryImageView.contentMode = UIViewContentModeScaleAspectFit;
-        myCell.transform = CGAffineTransformMakeRotation(M_PI_2);
-    }
-}
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (tableView == self.categoriesTableView) {
@@ -50,6 +53,7 @@
         ArticlesInfo* articlesData = [ArticlesInfo sharedArticlesInfo];
         [self performSegueWithIdentifier:@"articleChosenSegue" sender:articlesData.articlesArray[indexPath.section][indexPath.row]];
     }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 
@@ -83,6 +87,9 @@
     }
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 15;
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     ArticlesInfo* articlesData = [ArticlesInfo sharedArticlesInfo];
@@ -97,6 +104,7 @@
     }
     else {
         static NSString *CellIdentifier = @"CategoryCell";
+        
         CategoriesTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         [cell.categoryImageView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"category%d.jpeg",indexPath.row]]];
         cell.nameLabel.layer.shadowColor = [[UIColor blackColor] CGColor];
@@ -104,6 +112,7 @@
         cell.nameLabel.layer.shadowOpacity = 1.0f;
         cell.nameLabel.layer.shadowRadius = 1.0f;
         cell.nameLabel.text = articlesData.categoriesArray[indexPath.row];
+
         return cell;
     }
 }

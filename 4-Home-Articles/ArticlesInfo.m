@@ -24,6 +24,7 @@
         _categoriesArray = @[@"News", @"Crime", @"Sport", @"Lifestyle", @"Health"];
         [_categoriesArray retain];
         _articlesArray = [[NSMutableArray arrayWithCapacity:5] retain];
+        // the two retains here are needed because we NEED to own the objects but we don't otherwise
         for (int i = 0; i < 5; i++) {
             NSMutableArray* currentCategory = [NSMutableArray array];
             for (int j = 0; j < 8; j++) {
@@ -47,8 +48,8 @@
 }
 
 -(void) dealloc {
-    [_categoriesArray release];
-    [_articlesArray release];
+    // this is not neccessary because it's a singleton
+    // and it's made to live the entire time
     [super dealloc];
 }
 

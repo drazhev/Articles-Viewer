@@ -10,12 +10,12 @@
 
 @implementation CategoriesTableViewCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        // Initialization code
+-(id)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super initWithCoder:aDecoder]) {
+        self.transform = CGAffineTransformMakeRotation(M_PI_2);
+        self.categoryImageView.contentMode = UIViewContentModeScaleAspectFill;
     }
+    
     return self;
 }
 
@@ -25,8 +25,6 @@
 
     // Configure the view for the selected state
 }
-
-
 
 
 - (void)dealloc {
